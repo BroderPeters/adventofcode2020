@@ -19,6 +19,17 @@ pub fn solve_part1(_input: &[i32]) -> i32 {
     return 0;
 }
 
+#[aoc(day1, part1, refactor)]
+pub fn solve_part1_refactor(_input: &[i32]) -> i32 {
+    for elem in _input {
+        let other_value = 2020 - elem;
+        if _input.contains(&other_value) {
+            return elem * other_value;
+        }
+    }
+    return 0;
+}
+
 #[aoc(day1, part2)]
 pub fn solve_part2(_input: &[i32]) -> i32 {
     let mut index = 0;
@@ -49,6 +60,7 @@ mod tests {
         let input = input_generator(input);
 
         assert_eq!(solve_part1(&input), 935419);
+        assert_eq!(solve_part1_refactor(&input), 935419);
         assert_eq!(solve_part2(&input), 49880012);
     }
 }
