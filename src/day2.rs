@@ -26,6 +26,17 @@ pub fn solve_part1(_input: &[PasswordPhilosophy]) -> u32 {
     return valid;
 }
 
+#[aoc(day2, part1, refactor)]
+pub fn solve_part1_refactor(_input: &[PasswordPhilosophy]) -> u32 {
+    return _input
+        .iter()
+        .filter(|x| {
+            let count = x.pass.matches(x.x).count();
+            x.a <= count && count <= x.b
+        })
+        .count() as u32;
+}
+
 #[aoc(day2, part2)]
 pub fn solve_part2(_input: &[PasswordPhilosophy]) -> u32 {
     let mut valid: u32 = 0;
@@ -39,6 +50,18 @@ pub fn solve_part2(_input: &[PasswordPhilosophy]) -> u32 {
     return valid;
 }
 
+#[aoc(day2, part2, refactor)]
+pub fn solve_part2_refactor(_input: &[PasswordPhilosophy]) -> u32 {
+    return _input
+        .iter()
+        .filter(|x| {
+            let char_a = x.pass.chars().nth(x.a - 1).unwrap();
+            let char_b = x.pass.chars().nth(x.b - 1).unwrap();
+            (char_a == x.x) ^ (char_b == x.x)
+        })
+        .count() as u32;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -49,6 +72,8 @@ mod tests {
         let input = input_generator(input);
 
         assert_eq!(solve_part1(&input), 640);
+        assert_eq!(solve_part1_refactor(&input), 640);
         assert_eq!(solve_part2(&input), 472);
+        assert_eq!(solve_part2_refactor(&input), 472);
     }
 }
