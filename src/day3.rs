@@ -25,7 +25,6 @@ pub fn sled(_input: &[String], right: usize, down: usize) -> u32 {
 
         sleigh.y += down;
     }
-    println!("{} {} {}", right, down, tree_encounters);
     return tree_encounters;
 }
 
