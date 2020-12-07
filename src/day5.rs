@@ -1,7 +1,5 @@
 use substring::Substring;
 
-static mut SEAT_IDS: Vec<u32> = Vec::new();
-
 #[aoc_generator(day5)]
 pub fn input_generator(_input: &str) -> Vec<String> {
     return _input.lines().map(|x| String::from(x)).collect();
@@ -27,9 +25,8 @@ pub fn get_place(mut range: &mut [u32; 2], chars: std::str::Chars, decision_char
     }
 }
 
-#[aoc(day5, part1)]
-pub fn solve_part1(_input: &[String]) -> u32 {
-    let mut highest_seat_id: u32 = 0;
+pub fn get_seat_ids(_input: &[String]) -> Vec<u32> {
+    let mut seat_ids: Vec<u32> = Vec::new();
     for elem in _input {
         let mut row_range: [u32; 2] = [0, 127];
         let row = get_place(
@@ -44,25 +41,22 @@ pub fn solve_part1(_input: &[String]) -> u32 {
             elem.to_string().substring(7, 9).chars(),
             elem.chars().nth(9).unwrap(),
         );
-        let seat_id = row * 8 + column;
-        unsafe {
-            SEAT_IDS.push(seat_id);
-        }
-        if seat_id > highest_seat_id {
-            highest_seat_id = seat_id;
-        }
+        seat_ids.push(row * 8 + column);
     }
-    return highest_seat_id;
+    return seat_ids;
+}
+
+#[aoc(day5, part1)]
+pub fn solve_part1(_input: &[String]) -> u32 {
+    return *get_seat_ids(_input).iter().max().unwrap();
 }
 
 #[aoc(day5, part2)]
 pub fn solve_part2(_input: &[String]) -> u32 {
-    unsafe {
-        let itera = SEAT_IDS.iter();
-        for elem in itera {
-            if !SEAT_IDS.contains(&(elem + 1)) {
-                return elem + 1;
-            }
+    let seat_ids = get_seat_ids(_input);
+    for elem in seat_ids.iter() {
+        if !seat_ids.contains(&(elem + 1)) {
+            return elem + 1;
         }
     }
     return 0;
